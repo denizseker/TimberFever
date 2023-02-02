@@ -18,13 +18,12 @@ public class chainsawcontrol : MonoBehaviour
             //Bodynin kesildikten sonra istenilen noktaya düþmesi için kuvvet uyguluyoruz.
             treerb.AddForce(transform.forward * 50);
             treerb.AddForce(transform.up * 15);
-
-            Debug.Log("deneme");
-            //Para textini oluþturuyoruz
+            //Para textini aðacýn rewardý olarak güncelliyoruz.
+            floatingtext.GetComponent<TextMesh>().text = other.GetComponent<Trees>().moneyReward.ToString() + "$";
+            //Para textini oluþturuyoruz 
             Instantiate(floatingtext, other.transform.position, Quaternion.identity);
-
             //Aðaç kesildiði için parayý arttýrýyoruz.
-            gameManager.GetComponent<GameManager>().money += 5;
+            gameManager.GetComponent<GameManager>().money += other.GetComponent<Trees>().moneyReward;
             gameManager.GetComponent<GameManager>().moneyText.text =gameManager.GetComponent<GameManager>().money + "$";
             //Rootun artýk boþ olduðunu belirtiyoruz ve parenttan ayýrýyoruz.
             other.GetComponentInParent<root>().isRootEmpty = true;

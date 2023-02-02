@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> rootsLv5;
     public GameObject sawMain;
     private int rotationSpeed = 40;
-    public int money;
+    public float money;
     public bool canMerge = false;
     public bool moveCam = false;
 
@@ -171,8 +171,9 @@ public class GameManager : MonoBehaviour
             rootsLv1[3].GetComponent<root>().CloseRoot();
             //butonu deaktif ediyoruz
             mergeButton.GetComponent<Button>().interactable = false;
+            mergeButton.gameObject.SetActive(false);
             //level2 daha önce aktif deðil ise aktif ediliyor ve ilk aðaç ekleniyor
-            if(!level2isActive)
+            if (!level2isActive)
             {
                 OpenNewLevel(2);
             }
@@ -240,7 +241,7 @@ public class GameManager : MonoBehaviour
     {
         
 
-        if(money >= 5)
+        if(money >= 5 && !canMerge)
         {
             addRootButton.GetComponent<Button>().interactable = true;
         }
@@ -252,6 +253,7 @@ public class GameManager : MonoBehaviour
         if(rootsLv1[0].GetComponent<root>().isRootActive && rootsLv1[1].GetComponent<root>().isRootActive && rootsLv1[2].GetComponent<root>().isRootActive && rootsLv1[3].GetComponent<root>().isRootActive && !canMerge)
         {
             canMerge = true;
+            mergeButton.gameObject.SetActive(true);
             mergeButton.GetComponent<Button>().interactable = true;
         }
     }
