@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     public Text moneyText;
     public Button mergeButton;
     public Button addRootButton;
+    public Button sizeUpButton;
+    public GameObject maxLevelobj;
     public List<GameObject> rootsLv1;
     public List<GameObject> rootsLv2;
     public List<GameObject> rootsLv3;
@@ -46,10 +48,27 @@ public class GameManager : MonoBehaviour
     public Vector3 targetCamPosition;
 
 
+    private List<bool> isActiveList = new List<bool>();
+    private List<List<GameObject>> rootsList = new List<List<GameObject>>();
+
+    //private List<bool> isActiveList;
+    //private List<List<GameObject>> rootsList;
+
+
 
 
     private void Start()
     {
+        //Merge kontrol için aktiflikleri ve rootlarý listlere ekliyorum
+        isActiveList.Add(level2isActive);
+        isActiveList.Add(level3isActive);
+        isActiveList.Add(level4isActive);
+        isActiveList.Add(level5isActive);
+        rootsList.Add(rootsLv2);
+        rootsList.Add(rootsLv3);
+        rootsList.Add(rootsLv4);
+        rootsList.Add(rootsLv5);
+
         //Oyun baþlangýcýnda ilk root aktif ediliyor
         money = 200;
         moneyText.text = money+"$";
@@ -90,14 +109,32 @@ public class GameManager : MonoBehaviour
 
     public bool IsRootFull(List<GameObject> _roots)
     {
-        if(_roots[0].GetComponent<root>().isRootActive && _roots[1].GetComponent<root>().isRootActive && _roots[2].GetComponent<root>().isRootActive)
+        //level1 için özel durum.. 4 açýk root olmasý gerekiyor
+        if(_roots == rootsLv1)
         {
-            return true;
+            if(_roots[0].GetComponent<root>().isRootActive && _roots[1].GetComponent<root>().isRootActive && _roots[2].GetComponent<root>().isRootActive && _roots[3].GetComponent<root>().isRootActive)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
+        //check edilen root level 1 deðilse 3 tane olup olmadýðýna bakýlýyor.
         else
         {
-            return false;
+            if (_roots[0].GetComponent<root>().isRootActive && _roots[1].GetComponent<root>().isRootActive && _roots[2].GetComponent<root>().isRootActive)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
+
+        
     }
 
     public void OpenNewLevel(int _level)
@@ -116,7 +153,7 @@ public class GameManager : MonoBehaviour
             //target positionu set ediyoruz
             targetCamPosition = cameraPosLv2.transform.position;
             //level2 nin aktif olduðunu belirtiyoruz
-            level2isActive = true;
+            isActiveList[0] = true;
             //Level2 den root açýyoruz.
         }
         else if (_level == 3)
@@ -126,7 +163,7 @@ public class GameManager : MonoBehaviour
             moveCam = true;
             areaLength = areaLv3;
             targetCamPosition = cameraPosLv3.transform.position;
-            level3isActive = true;
+            isActiveList[1] = true;
         }
         else if (_level == 4)
         {
@@ -135,7 +172,7 @@ public class GameManager : MonoBehaviour
             moveCam = true;
             areaLength = areaLv4;
             targetCamPosition = cameraPosLv4.transform.position;
-            level4isActive = true;
+            isActiveList[2] = true;
         }
         else if (_level == 5)
         {
@@ -144,7 +181,7 @@ public class GameManager : MonoBehaviour
             moveCam = true;
             areaLength = areaLv5;
             targetCamPosition = cameraPosLv5.transform.position;
-            level5isActive = true;
+            isActiveList[3] = true;
             //rootsLv5[0].GetComponent<root>().ActivateRoot();
         }
     }
@@ -172,76 +209,69 @@ public class GameManager : MonoBehaviour
             //butonu deaktif ediyoruz
             mergeButton.GetComponent<Button>().interactable = false;
             mergeButton.gameObject.SetActive(false);
-            //level2 daha önce aktif deðil ise aktif ediliyor ve ilk aðaç ekleniyor
-            if (!level2isActive)
-            {
-                OpenNewLevel(2);
-            }
-            //Level2 doluysa
-            if (IsRootFull(rootsLv2))
-            {
-                //level2 kapatýlýyor
-                CloseAllRoot(rootsLv2);
-                //level3 aktif deðil ise açýlýyor
-                if (!level3isActive)
-                {
-                    OpenNewLevel(3);
-                }
-                //level3 doluysa
-                if (IsRootFull(rootsLv3))
-                {
-                    //level 3 kapatýlýyor
-                    CloseAllRoot(rootsLv3);
-                    //level4 aktif deðilse açýlýyor
-                    if (!level4isActive)
-                    {
-                        OpenNewLevel(4);
-                    }
-                    //level4 doluysa
-                    if (IsRootFull(rootsLv4))
-                    {
-                        //level4 kapatýlýyor
-                        CloseAllRoot(rootsLv4);
-                        //level5 aktif deðilse açýlýyor
-                        if (!level5isActive)
-                        {
-                            OpenNewLevel(5);
-                        }
-                        if (IsRootFull(rootsLv5))
-                        {
-                            Debug.Log("Oyun bitti");
-                        }
-                        //level 5 full deðilse ekleniyor
-                        else
-                        {
-                            addNewRoot(rootsLv5);
-                        }
-                    }
-                    //level 4 full deðilse ekleniyor
-                    else
-                    {
-                        addNewRoot(rootsLv4);
-                    }
-                }
-                //level 3 full deðilse ekleniyor
-                else
-                {
-                    addNewRoot(rootsLv3);
-                }
-            }
-            //level 2 full deðilse ekleniyor
-            else
+            //level2 açýksa ve dolu deðilse
+            if (isActiveList[0] && !IsRootFull(rootsLv2))
             {
                 addNewRoot(rootsLv2);
             }
+            //level2 doluysa
+            else
+            {
+                CloseAllRoot(rootsLv2);
+
+                if (isActiveList[1] && !IsRootFull(rootsLv3))
+                {
+                    addNewRoot(rootsLv3);
+                }
+                //level3 doluysa
+                else
+                {
+                    CloseAllRoot(rootsLv3);
+
+                    if (isActiveList[2] && !IsRootFull(rootsLv4))
+                    {
+                        addNewRoot(rootsLv4);
+                    }
+                    //level 4 doluysa
+                    else
+                    {
+                        CloseAllRoot(rootsLv4);
+
+                        if (isActiveList[3] && !IsRootFull(rootsLv5))
+                        {
+                            addNewRoot(rootsLv5);
+                        }
+                        //level5 doluysa
+                        else
+                        {
+                            Debug.Log("Oyun bitti merge içi");
+                        }
+                    }
+                }
+                
+            }
+            
         }
     }
 
     private void Update()
     {
-        
-
-        if(money >= 5 && !canMerge)
+        //sizeup alýnabilir 5. level açýksa baþka level kalmadýðý için alýnamaz olucak.
+        if(money >= 50 && !isActiveList[3])
+        {
+            sizeUpButton.interactable = true;
+        }
+        else
+        {
+            //level 5 aktif ise son level olduðu için image i açýyorum.
+            if (isActiveList[3])
+            {
+                maxLevelobj.SetActive(true);
+            }
+            sizeUpButton.interactable = false;
+        }
+        //addtree alýnabilir
+        if (money >= 5 && !canMerge)
         {
             addRootButton.GetComponent<Button>().interactable = true;
         }
@@ -249,14 +279,113 @@ public class GameManager : MonoBehaviour
         {
             addRootButton.GetComponent<Button>().interactable = false;
         }
-        //Tüm rootlar aktif ve merge butonu aktif deðilse kontrol edip, merge olabilir durumu
-        if(rootsLv1[0].GetComponent<root>().isRootActive && rootsLv1[1].GetComponent<root>().isRootActive && rootsLv1[2].GetComponent<root>().isRootActive && rootsLv1[3].GetComponent<root>().isRootActive && !canMerge)
+        //merge durumu level1 fullse
+        if (IsRootFull(rootsLv1) && !canMerge)
         {
-            canMerge = true;
-            mergeButton.gameObject.SetActive(true);
-            mergeButton.GetComponent<Button>().interactable = true;
+            //level2 açýksa
+            if(isActiveList[0])
+            {
+                //level2 dolu deðilse
+                if (!IsRootFull(rootsList[0]))
+                {
+                    canMerge = true;
+                    mergeButton.gameObject.SetActive(true);
+                    mergeButton.GetComponent<Button>().interactable = true;
+                }
+                //level2 doluysa
+                else
+                {
+                    //level3 açýksa
+                    if (isActiveList[1])
+                    {
+                        //level3 dolu deðilse
+                        if (!IsRootFull(rootsList[1]))
+                        {
+                            canMerge = true;
+                            mergeButton.gameObject.SetActive(true);
+                            mergeButton.GetComponent<Button>().interactable = true;
+                        }
+                        //level3 doluysa
+                        else
+                        {
+                            //level4 açýksa
+                            if (isActiveList[2])
+                            {
+                                //level4 dolu deðilse
+                                if (!IsRootFull(rootsList[2]))
+                                {
+                                    canMerge = true;
+                                    mergeButton.gameObject.SetActive(true);
+                                    mergeButton.GetComponent<Button>().interactable = true;
+                                }
+                                //level 4 doluysa
+                                else
+                                {
+                                    //level5 açýksa
+                                    if (isActiveList[3])
+                                    {
+                                        //level5 dolu deðilse
+                                        if (!IsRootFull(rootsList[3]))
+                                        {
+                                            canMerge = true;
+                                            mergeButton.gameObject.SetActive(true);
+                                            mergeButton.GetComponent<Button>().interactable = true;
+                                        }
+                                        else
+                                        {
+                                            Debug.Log("Oyun bitti");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
         }
     }
+
+
+
+    public void ExpandLevel()
+    {
+        //para yetiyorsa
+        if(money >= 50)
+        {
+            //level2 açýk deðilse açýyoruz
+            if (!isActiveList[0])
+            {
+                OpenNewLevel(2);
+            }
+            else
+            {
+                //level2 açýk ve 3 açýk deðilse
+                if (!isActiveList[1])
+                {
+                    OpenNewLevel(3);
+                }
+                else
+                {
+                    //level3 açýk ve 4 açýk deðilse
+                    if (!isActiveList[2])
+                    {
+                        OpenNewLevel(4);
+                    }
+                    else
+                    {
+                        //level4 açýk ve 5 açýk deðilse
+                        if (!isActiveList[3])
+                        {
+                            OpenNewLevel(5);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -274,7 +403,6 @@ public class GameManager : MonoBehaviour
                 moveCam = false;
             }
         }
-
 
 
         //testere hareketi
