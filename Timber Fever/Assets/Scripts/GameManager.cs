@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     public int sawLengthLv4 = 120;
     public int sawLengthLv5 = 160;
 
+    
 
     public GameObject groundTop;
     public Text moneyText;
@@ -403,6 +405,8 @@ public class GameManager : MonoBehaviour
                 moveCam = false;
             }
         }
+
+        
 
 
         //testere hareketi

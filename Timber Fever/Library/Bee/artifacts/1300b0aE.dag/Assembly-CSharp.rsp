@@ -355,6 +355,8 @@
 -r:"Library/Bee/artifacts/1300b0aE.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/UnityEngine.UI.ref.dll"
+"Assets/Scripts/AccelCamMovement.cs"
+"Assets/Scripts/AccelerateChainSaw.cs"
 "Assets/Scripts/chainsawcontrol.cs"
 "Assets/Scripts/DeleteArea.cs"
 "Assets/Scripts/FloatingText.cs"
