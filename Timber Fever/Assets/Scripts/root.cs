@@ -96,6 +96,8 @@ public class root : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
+
         //root aktifse ve boþ deðilse üzerindeki aðacý büyütüyoruz
         if(isRootActive && !isRootEmpty)
         {
@@ -104,7 +106,7 @@ public class root : MonoBehaviour
             //Aðaç büyüklüðü 2 olana kadar büyütüyoruz
             if (newBody.transform.localScale.y <= 4.5f)
             {
-                newBody.transform.localScale = new Vector3(newBody.transform.localScale.x, newBody.transform.localScale.y + 0.6f * Time.deltaTime, newBody.transform.localScale.z);
+                newBody.transform.localScale = new Vector3(newBody.transform.localScale.x, newBody.transform.localScale.y + 0.6f * gameManager.GetComponent<GameManager>().speedMultiply * Time.deltaTime, newBody.transform.localScale.z);
             }
             //Aðaç büyüklüðü 1.2 ye ulaþýnca 
             if(newBody.transform.localScale.y >= 2.5f)
@@ -112,7 +114,7 @@ public class root : MonoBehaviour
                 //Yapraklar tamamen açýlana kadar büyütüyoruz.
                 if(skinRend.GetBlendShapeWeight(0) >= -35)
                 {
-                    float deneme = skinRend.GetBlendShapeWeight(0) - 80 * Time.deltaTime;
+                    float deneme = skinRend.GetBlendShapeWeight(0) - 80 * gameManager.GetComponent<GameManager>().speedMultiply * Time.deltaTime;
                     skinRend.SetBlendShapeWeight(0, deneme);
                 }
                 

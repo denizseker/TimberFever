@@ -37,7 +37,9 @@ public class GameManager : MonoBehaviour
     public List<GameObject> rootsLv4;
     public List<GameObject> rootsLv5;
     public GameObject sawMain;
-    private int rotationSpeed = 40;
+    public int rotationSpeed = 40;
+    //Aðaç büyümesini ve testere hýzýný kontrol eder
+    public int speedMultiply = 1;
     public float money;
     public bool canMerge = false;
     public bool moveCam = false;
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
     private bool level5isActive = false;
     public float areaLength;
     public Vector3 targetCamPosition;
+    private Vector3 offSet = new Vector3(0.05f, 0.05f, -0.05f);
 
 
     private List<bool> isActiveList = new List<bool>();
@@ -285,7 +288,7 @@ public class GameManager : MonoBehaviour
         if (IsRootFull(rootsLv1) && !canMerge)
         {
             //level2 açýksa
-            if(isActiveList[0])
+            if (isActiveList[0])
             {
                 //level2 dolu deðilse
                 if (!IsRootFull(rootsList[0]))
@@ -400,16 +403,13 @@ public class GameManager : MonoBehaviour
                 groundTop.transform.localScale = new Vector3(groundTop.transform.localScale.x + 0.5f * Time.deltaTime, groundTop.transform.localScale.y + 0.5f * Time.deltaTime, groundTop.transform.localScale.z + 0.5f * Time.deltaTime);
             }
             cameraMain.transform.position = Vector3.Lerp(cameraMain.transform.position, targetCamPosition, 3 * Time.deltaTime);
-            if (cameraMain.transform.position == targetCamPosition)
+            if (cameraMain.transform.position.y > targetCamPosition.y - offSet.y)
             {
+                Debug.Log("Açýlma bitti");
                 moveCam = false;
             }
         }
-
-        
-
-
         //testere hareketi
-        sawMain.transform.Rotate(rotationSpeed * Time.deltaTime * Vector3.up);
+        sawMain.transform.Rotate(rotationSpeed * speedMultiply * Time.deltaTime * Vector3.up);
     }
 }
