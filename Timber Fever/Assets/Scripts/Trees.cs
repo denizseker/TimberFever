@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Trees : MonoBehaviour
 {
-    public int moneyReward;
+    public float moneyReward;
 
 }

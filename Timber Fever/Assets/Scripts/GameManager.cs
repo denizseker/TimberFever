@@ -17,11 +17,11 @@ public class GameManager : MonoBehaviour
     public float areaLv3 = 2f;
     public float areaLv4 = 2.5f;
     public float areaLv5 = 3f;
-    public int sawLengthLv1 = 15;
-    public int sawLengthLv2 = 50;
-    public int sawLengthLv3 = 85;
-    public int sawLengthLv4 = 120;
-    public int sawLengthLv5 = 160;
+    public int sawLengthLv1 = 20;
+    public int sawLengthLv2 = 53;
+    public int sawLengthLv3 = 88;
+    public int sawLengthLv4 = 124;
+    public int sawLengthLv5 = 161;
 
     
 
@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
     public Button mergeButton;
     public Button addRootButton;
     public Button sizeUpButton;
+    public Button incomeButton;
+    public Text treeMoneyText;
+    public Text expandMoneyText;
+    public Text incomeMoneyText;
+    public Text incomeMultiText;
     public GameObject maxLevelobj;
     public List<GameObject> rootsLv1;
     public List<GameObject> rootsLv2;
@@ -41,6 +46,12 @@ public class GameManager : MonoBehaviour
     //Aðaç büyümesini ve testere hýzýný kontrol eder
     public int speedMultiply = 1;
     public float money;
+    public float expandMoney = 100f;
+    public float treeMoney = 15f;
+    public float incomeMoney = 30f;
+    public float expandMultiply;
+    public float incomeMultiply;
+    public float treeMultiply;
     public bool canMerge = false;
     public bool moveCam = false;
 
@@ -74,8 +85,16 @@ public class GameManager : MonoBehaviour
         rootsList.Add(rootsLv4);
         rootsList.Add(rootsLv5);
 
-        //Oyun baþlangýcýnda ilk root aktif ediliyor
-        money = 200;
+        expandMoneyText.text = "100 $";
+        treeMoneyText.text = "15 $";
+        incomeMoneyText.text = "30 $";
+
+        //Oyun baþlangýcýnda ilk root aktif ediliyor ve deðerler atanýyor
+        money = 0;
+        expandMultiply = 1f;
+        treeMultiply = 1f;
+        incomeMultiply = 1f;
+        incomeMultiText.text = "X" + incomeMultiply.ToString("f1");
         moneyText.text = money+"$";
         rootsLv1[0].GetComponent<root>().ActivateRoot();
     }
@@ -87,22 +106,22 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < _root.Count; i++)
         {
             //Para kontrol
-            if (money >= 5)
+            if (money >= treeMoney * treeMultiply)
             {
                 //Root aktif deðilse
                 if (!_root[i].GetComponent<root>().isRootActive)
                 {
-                    //Para eklenip root aktif hale geliyor
-                    money -= 5;
-                    moneyText.text = money + "$";
+                    //Para eksilip root aktif hale geliyor
+                    money -= treeMoney * treeMultiply;
+                    moneyText.text = money.ToString("f0") + "$";
                     _root[i].GetComponent<root>().ActivateRoot();
                     break;
                 }
             }
-            else
-            {
-                Debug.Log("Para yetersiz");
-            }
+            //else
+            //{
+            //    Debug.Log("Para yetersiz");
+            //}
         }
     }
 
@@ -110,6 +129,10 @@ public class GameManager : MonoBehaviour
     public void rootButtonClick()
     {
         addNewRoot(rootsLv1);
+        treeMultiply = 1.1f;
+        treeMoney = treeMoney * treeMultiply;
+        treeMoneyText.text = treeMoney.ToString("f0");
+
     }
 
     public bool IsRootFull(List<GameObject> _roots)
@@ -198,6 +221,16 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void IncreaseIncome()
+    {
+        money -= incomeMoney * incomeMultiply;
+        moneyText.text = money.ToString("f0") + "$";
+        incomeMultiply += 0.1f;
+        incomeMoney = incomeMoney * incomeMultiply;
+        incomeMultiText.text = "X" + incomeMultiply.ToString("f1");
+        incomeMoneyText.text = (incomeMoney * incomeMultiply).ToString("f0");
+
+    }
 
     //Merge yapma
     public void Merge()
@@ -259,11 +292,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ChangeColour(Button _obj,byte _colour)
+    {
+        _obj.transform.GetChild(0).GetComponent<Text>().color = new Color32(_colour, _colour, _colour, 255);
+        _obj.transform.GetChild(2).GetComponent<Image>().color = new Color32(_colour, _colour, _colour, 255);
+        _obj.transform.GetChild(3).GetComponent<Text>().color = new Color32(_colour, _colour, _colour, 255);
+        _obj.transform.GetChild(4).GetComponent<Image>().color = new Color32(_colour, _colour, _colour, 255);
+    }
+
     private void Update()
     {
         //sizeup alýnabilir 5. level açýksa baþka level kalmadýðý için alýnamaz olucak.
-        if(money >= 50 && !isActiveList[3])
+        if(money >= expandMoney * expandMultiply && !isActiveList[3] && !gameObject.GetComponent<AccelerateChainSaw>().isMovingBack)
         {
+            ChangeColour(sizeUpButton, 255);
             sizeUpButton.interactable = true;
         }
         else
@@ -273,15 +315,31 @@ public class GameManager : MonoBehaviour
             {
                 maxLevelobj.SetActive(true);
             }
+            ChangeColour(sizeUpButton, 100);
             sizeUpButton.interactable = false;
         }
-        //addtree alýnabilir
-        if (money >= 5 && !canMerge)
+        //Income button aktiflik
+        if(money >= incomeMoney * incomeMultiply)
         {
+            ChangeColour(incomeButton, 255);
+            incomeButton.interactable = true;
+        }
+        else
+        {
+            ChangeColour(incomeButton, 100);
+            incomeButton.transform.GetChild(5).GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+            incomeButton.interactable = false;
+        }
+
+        //addtree alýnabilir
+        if (money >= treeMoney * treeMultiply && !canMerge && !IsRootFull(rootsLv1))
+        {
+            ChangeColour(addRootButton, 255);
             addRootButton.GetComponent<Button>().interactable = true;
         }
         else
         {
+            ChangeColour(addRootButton, 100);
             addRootButton.GetComponent<Button>().interactable = false;
         }
         //merge durumu level1 fullse
@@ -356,8 +414,14 @@ public class GameManager : MonoBehaviour
     public void ExpandLevel()
     {
         //para yetiyorsa
-        if(money >= 50)
+        if(money >= expandMoney * expandMultiply)
         {
+            money -= expandMoney * expandMultiply;
+            expandMultiply += 1;
+            moneyText.text = money.ToString("f0") + "$";
+            expandMoneyText.text = (expandMoney * expandMultiply).ToString("f0") + "$";
+            
+
             //level2 açýk deðilse açýyoruz
             if (!isActiveList[0])
             {
@@ -405,7 +469,7 @@ public class GameManager : MonoBehaviour
             cameraMain.transform.position = Vector3.Lerp(cameraMain.transform.position, targetCamPosition, 3 * Time.deltaTime);
             if (cameraMain.transform.position.y > targetCamPosition.y - offSet.y)
             {
-                Debug.Log("Açýlma bitti");
+                
                 moveCam = false;
             }
         }

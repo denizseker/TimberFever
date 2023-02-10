@@ -9,9 +9,6 @@ public class AccelerateChainSaw : MonoBehaviour
 
     //Chainsaw ý double click ile hýzlandýrma.
 
-    public Text text1;
-    public Text text2;
-
     private float pastTime;
     private float firstLeftClickTime;
     private float timeBetweenLeftClick = 0.5f;
@@ -31,7 +28,7 @@ public class AccelerateChainSaw : MonoBehaviour
             if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 leftClickNum += 1;
-                Debug.Log("Leftclick num: " + leftClickNum);
+                
             }
             if (leftClickNum == 1 && isTimeCheckAllowed)
             {

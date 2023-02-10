@@ -31,7 +31,7 @@ public class root : MonoBehaviour
             if (isRootActive)
             {
                 //Aðacý rootun üzerine spawn ediyoruz
-                newBody = Instantiate(treeBody, new Vector3(transform.position.x, transform.position.y + 0.12f, transform.position.z), Quaternion.identity);
+                newBody = Instantiate(treeBody, new Vector3(transform.position.x, transform.position.y + 0.4f, transform.position.z), Quaternion.identity);
                 //Aðacýn parentini root yapýyoruz
                 newBody.transform.SetParent(transform);
                 //Aðacý aktif hale getiriyoruz
@@ -59,9 +59,6 @@ public class root : MonoBehaviour
             //Rootu deaktif edip boþ olduðunu belirtiyoruz
             isRootActive = false;
             isRootEmpty = true;
-            //Parayý ekleyip ekrana yazdýrýyoruz
-            gameManager.GetComponent<GameManager>().money += 5;
-            gameManager.GetComponent<GameManager>().moneyText.text = gameManager.GetComponent<GameManager>().money + "$";
             gameObject.SetActive(false);
         }
         //Root active ama dolu ise (aðaç var)
@@ -75,9 +72,6 @@ public class root : MonoBehaviour
             //Rootu deaktif edip boþ olduðunu belirtiyoruz
             isRootActive = false;
             isRootEmpty = true;
-            //Parayý ekleyip ekrana yazdýrýyoruz
-            gameManager.GetComponent<GameManager>().money += 5;
-            gameManager.GetComponent<GameManager>().moneyText.text = gameManager.GetComponent<GameManager>().money + "$";
             gameObject.SetActive(false);
         }
         
@@ -112,7 +106,7 @@ public class root : MonoBehaviour
             if(newBody.transform.localScale.y >= 2.5f)
             {
                 //Yapraklar tamamen açýlana kadar büyütüyoruz.
-                if(skinRend.GetBlendShapeWeight(0) >= -35)
+                if(skinRend.GetBlendShapeWeight(0) >= 30)
                 {
                     float deneme = skinRend.GetBlendShapeWeight(0) - 80 * gameManager.GetComponent<GameManager>().speedMultiply * Time.deltaTime;
                     skinRend.SetBlendShapeWeight(0, deneme);
