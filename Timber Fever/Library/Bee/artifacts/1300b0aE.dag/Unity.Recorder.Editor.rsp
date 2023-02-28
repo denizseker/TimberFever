@@ -118,6 +118,7 @@
 -define:ENABLE_TILEMAP
 -define:ENABLE_TIMELINE
 -define:ENABLE_LEGACY_INPUT_MANAGER
+-define:CAPTURE_ACTION
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
 -r:"C:/Program Files/Unity/Hub/Editor/2021.3.6f1/Editor/Data/Managed/UnityEditor.Graphs.dll"
@@ -332,6 +333,11 @@
 -r:"C:/Program Files/Unity/Hub/Editor/2021.3.6f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Transactions.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2021.3.6f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.dll"
 -r:"C:/Program Files/Unity/Hub/Editor/2021.3.6f1/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.Linq.dll"
+-r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.burst@1.6.6/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll"
+-r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.burst@1.6.6/Unity.Burst.CodeGen/Unity.Burst.Cecil.Mdb.dll"
+-r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.burst@1.6.6/Unity.Burst.CodeGen/Unity.Burst.Cecil.Pdb.dll"
+-r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.burst@1.6.6/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll"
+-r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.burst@1.6.6/Unity.Burst.Unsafe.dll"
 -r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.collab-proxy@1.15.18/Lib/Editor/PlasticSCM/log4netPlastic.dll"
 -r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.collab-proxy@1.15.18/Lib/Editor/PlasticSCM/Unity.Plastic.Antlr3.Runtime.dll"
 -r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.collab-proxy@1.15.18/Lib/Editor/PlasticSCM/Unity.Plastic.Newtonsoft.Json.dll"
@@ -345,6 +351,7 @@
 -r:"C:/Users/Teknogenetik/Desktop/Projects/TimberFever/Timber Fever/Library/PackageCache/com.unity.visualscripting@1.7.8/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/Unity.Recorder.Base.ref.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/Unity.Recorder.ref.dll"
+-r:"Library/Bee/artifacts/1300b0aE.dag/Unity.RenderPipelines.Core.Runtime.ref.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/Unity.Timeline.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/Unity.Timeline.ref.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/UnityEditor.TestRunner.ref.dll"

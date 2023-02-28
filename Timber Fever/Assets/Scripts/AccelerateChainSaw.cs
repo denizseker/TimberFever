@@ -15,6 +15,7 @@ public class AccelerateChainSaw : MonoBehaviour
     private bool isTimeCheckAllowed = true;
     private int leftClickNum = 0;
     public GameObject mainCam;
+    public GameObject vfx;
 
     public bool isMoving = false;
     public bool isMovingBack = false;
