@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         incomeMoneyText.text = "30 $";
 
         //Oyun baþlangýcýnda ilk root aktif ediliyor ve deðerler atanýyor
-        money = 200;
+        money = 9999999;
         expandMultiply = 1f;
         treeMultiply = 1f;
         incomeMultiply = 1f;
